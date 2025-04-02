@@ -11,4 +11,4 @@ docker run -p 8000:8000 --name camera-ingestor -d camera-data-ingestor
 echo "Camera Data Ingestor API is running at http://localhost:8000"
 echo "To view logs: docker logs camera-ingestor"
 echo "To stop the container: docker stop camera-ingestor"
-echo "To deploy: log in and push the image"
+echo "To deploy: log in and push the image analyticsrepository.azurecr.io/camera-data-ingestor:latest"
