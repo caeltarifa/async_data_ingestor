@@ -50,6 +50,13 @@ async def ingest_data(payload: CameraDataPayload):
     """
     try:
         await data_ingestion_service.ingest_data(payload)
+        
+        # Convert the people data to a serializable format
+        people_data = [
+            {"age": person.age, "gender": person.gender.value} 
+            for person in payload.people
+        ]
+        
         return {
             "status": "success",
             "message": "Data ingested successfully",
@@ -58,7 +65,7 @@ async def ingest_data(payload: CameraDataPayload):
                 "company_name": payload.company_name,
                 "device_id": payload.device_id,
                 "person_count": payload.person_count,
-                "ages": payload.ages
+                "people": people_data
             }
         }
     except Exception as e:

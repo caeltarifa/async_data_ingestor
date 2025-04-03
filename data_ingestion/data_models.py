@@ -1,6 +1,31 @@
 from pydantic import BaseModel, Field, field_validator
-from typing import List, Optional
+from typing import List, Optional, Literal
 from datetime import datetime
+from enum import Enum
+
+class Gender(str, Enum):
+    """Enum for gender types"""
+    MALE = "male"
+    FEMALE = "female"
+    OTHER = "other"
+    UNKNOWN = "unknown"
+
+class PersonData(BaseModel):
+    """
+    Model for person data including age and gender
+    
+    Attributes:
+        age (int): Age of the person detected
+        gender (Gender): Gender of the person detected
+    """
+    age: int = Field(..., description="Age of the person detected")
+    gender: Gender = Field(..., description="Gender of the person detected")
+    
+    @field_validator('age')
+    def validate_age(cls, v):
+        if v < 0 or v > 120:
+            raise ValueError('age must be between 0 and 120')
+        return v
 
 class CameraDataPayload(BaseModel):
     """
@@ -11,13 +36,13 @@ class CameraDataPayload(BaseModel):
         company_name (str): The name of the company sending the data
         device_id (str): The ID of the camera device
         person_count (int): Number of persons detected by the camera
-        ages (List[int]): List of ages of people detected by the camera
+        people (List[PersonData]): List of people detected by the camera with their age and gender
     """
     timestamp: datetime = Field(default_factory=datetime.now, description="Timestamp of data capture")
     company_name: str = Field(..., description="Name of the company")
     device_id: str = Field(..., description="ID of the camera device")
     person_count: int = Field(..., description="Number of persons detected by camera")
-    ages: List[int] = Field(..., description="Ages of people detected by camera")
+    people: List[PersonData] = Field(..., description="People detected by camera with age and gender")
     
     @field_validator('company_name')
     def company_name_must_not_be_empty(cls, v):
@@ -37,13 +62,10 @@ class CameraDataPayload(BaseModel):
             raise ValueError('person_count must be a non-negative integer')
         return v
     
-    @field_validator('ages')
-    def validate_ages(cls, v):
+    @field_validator('people')
+    def validate_people(cls, v):
         if not v:
-            raise ValueError('ages list cannot be empty if persons are detected')
-        for age in v:
-            if age < 0 or age > 120:
-                raise ValueError('age must be between 0 and 120')
+            raise ValueError('people list cannot be empty if persons are detected')
         return v
     
     class Config:
@@ -53,6 +75,10 @@ class CameraDataPayload(BaseModel):
                 "company_name": "Example Corp",
                 "device_id": "CAM001",
                 "person_count": 3,
-                "ages": [25, 30, 45]
+                "people": [
+                    {"age": 25, "gender": "male"},
+                    {"age": 30, "gender": "female"},
+                    {"age": 45, "gender": "unknown"}
+                ]
             }
         }

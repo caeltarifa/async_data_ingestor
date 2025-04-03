@@ -34,7 +34,11 @@ class DataIngestionService:
         logger.info(f"  Company: {payload.company_name}")
         logger.info(f"  Device ID: {payload.device_id}")
         logger.info(f"  Number of Persons: {payload.person_count}")
-        logger.info(f"  Ages: {', '.join(map(str, payload.ages))}")
+        
+        # Log each person's data including age and gender
+        logger.info("  People detected:")
+        for i, person in enumerate(payload.people, 1):
+            logger.info(f"    Person {i}: Age {person.age}, Gender: {person.gender.value}")
         
         # Simulate some async processing
         await asyncio.sleep(0.1)
