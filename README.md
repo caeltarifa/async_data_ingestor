@@ -4,9 +4,6 @@ A FastAPI application for ingesting camera data asynchronously.
 
 ## Docker Setup
 
-### Prerequisites
-- Docker installed
-- 
 ### Build & Run
 ```sh
 cd camera_data_ingestor
