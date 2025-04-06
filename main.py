@@ -23,7 +23,7 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For production, specify exact origins
+    allow_origins=["https://web-camera-data-ingestor.nicedesert-291b7b89.eastus.azurecontainerapps.io"],  # For production, specify exact origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
