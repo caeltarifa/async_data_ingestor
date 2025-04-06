@@ -20,11 +20,24 @@ cd camera_data_ingestor
 ```json
 POST /ingest
 {
-  "timestamp": "2025-04-02T12:00:00",
   "company_name": "Example Corp",
   "device_id": "CAM001",
+  "people": [
+    {
+      "age": 25,
+      "gender": "male"
+    },
+    {
+      "age": 30,
+      "gender": "female"
+    },
+    {
+      "age": 45,
+      "gender": "unknown"
+    }
+  ],
   "person_count": 3,
-  "ages": [25, 30, 45]
+  "timestamp": "2025-04-02T12:00:00"
 }
 ```
 
