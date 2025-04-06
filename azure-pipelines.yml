@@ -24,6 +24,19 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - task: Bash@3
+      displayName: Print Variables
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "--- Printing Variables ---"
+          echo "dockerRegistryServiceConnection: $(dockerRegistryServiceConnection)"
+          echo "imageRepository: $(imageRepository)"
+          echo "containerRegistry: $(containerRegistry)"
+          echo "dockerfilePath: $(dockerfilePath)"
+          echo "tag: $(tag)"
+          echo "vmImageName: $(vmImageName)"
+          echo "--- End of Variables ---"
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
